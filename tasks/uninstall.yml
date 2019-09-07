@@ -1,0 +1,11 @@
+---
+- name: Remove service directories
+  file:
+    path: "{{ ntp__directories }}"
+    state: absent
+
+- name: Uninstall service packages
+  package:
+    name: "{{ ntp__packages }}"
+    state: absent
+...

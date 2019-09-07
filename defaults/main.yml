@@ -1,0 +1,93 @@
+---
+# Status of package ( present, absent )
+ntp__state:                "present"
+
+# Service, daemon, opt_ions and description
+ntp__service:              "ntp"
+ntp__service_name:         "ntpd"
+ntp__description:          "{{ ntp__service }} - network time protocol (NTP) daemon."
+
+# The -g option allows ntp to set time without restriction
+ntp__service_options: "-g -u {{ ntp__user }}:{{ ntp__group }} -p {{ ntp__pid_file }} -f {{ ntp__drift_file }}"
+
+# User and group
+ntp__user:                 "{{ ntp__service }}"
+ntp__group:                "{{ ntp__user }}"
+
+# Modes
+ntp__dir_mode:             "0750"
+ntp__file_mode:            "0640"
+
+# Directories
+ntp__root_dir:             ""
+ntp__etc_dir:              "{{ ntp__root_dir }}/etc"
+ntp__var_dir:              "{{ ntp__root_dir }}/var"
+ntp__var_lib_dir:          "{{ ntp__var_dir }}/lib"
+ntp__var_log_dir:          "{{ ntp__var_dir }}/log"
+ntp__run_dir:              "{{ ntp__root_dir }}/run/{{ ntp__service }}"
+
+ntp__conf_dir:             "{{ ntp__etc_dir }}"
+ntp__log_dir:              "{{ ntp__var_log_dir }}/{{ ntp__service }}"
+ntp__stats_dir:            "{{ ntp__var_log_dir }}/ntpstats"
+ntp__keys_dir:             "{{ ntp__etc_dir }}/{{ ntp__service }}"
+ntp__drift_dir:            "{{ ntp__var_lib_dir }}/{{ ntp__service }}"
+
+ntp__directories:
+  - "{{ ntp__stats_dir }}"
+  - "{{ ntp__keys_dir }}"
+  - "{{ ntp__drift_dir }}"
+  - "{{ ntp__log_dir }}"
+
+# Files
+ntp__conf_file:               "{{ ntp__conf_dir }}/{{ ntp__service }}.conf"
+ntp__sysconfig_file:          "{{ ntp__etc_dir }}/sysconfig/{{ ntp__service }}"
+ntp__logrotate_file_name:     "{{ ntp__service }}"
+ntp__pid_file:                "{{ ntp__run_dir }}/{{ ntp__service_name }}.pid"
+ntp__log_file:                "{{ ntp__log_dir }}/{{ ntp__service_name }}.log"
+ntp__drift_file:              "{{ ntp__drift_dir }}/{{ ntp__service_name }}.drift"
+
+# Required packages
+ntp__packages:
+  - "{{ ntp__service }}"
+
+# Default NTP settings
+ntp__servers:
+  - "0.pool.ntp.org iburst"
+  - "1.pool.ntp.org iburst"
+  - "0.centos.pool.ntp.org iburst"
+  - "1.centos.pool.ntp.org iburst"
+  - "0.ubuntu.pool.ntp.org iburst"
+  - "1.ubuntu.pool.ntp.org iburst"
+
+ntp__restrict:
+  - "-4 default kod notrap nomodify nopeer noquery"
+  - "-6 default kod notrap nomodify nopeer noquery"
+  - "127.0.0.1"
+  - "-6 ::1"
+  - "source notrap nomodify noquery"
+
+ntp__statistics: "loopstats peerstats clockstats"
+ntp__file_gen:
+  - "loopstats file loopstats type day enable"
+  - "peerstats file peerstats type day enable"
+  - "clockstats file clockstats type day enable"
+
+ntp__auth:             true
+ntp__broadcast:        false
+ntp__broadcast_client: false
+ntp__multicast_client: false
+
+ntp__crypto:           false
+ntp__include_file:     ""
+
+# Path for a key file
+# See http://www.ntp.org/ntpfaq/NTP-s-config-adv.htm for help
+ntp__keys:             ""
+# Define keys:
+# ntp__trusted_key: "4 6 14 15 22"
+# ntp__request_key: "15"
+# ntp__control_key: "15"
+ntp__trusted_key:      ""
+ntp__request_key:      ""
+ntp__control_key:      ""
+...

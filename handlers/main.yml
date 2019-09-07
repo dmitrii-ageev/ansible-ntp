@@ -1,0 +1,17 @@
+---
+- name: Start ntp service
+  systemd:
+    name: "{{ ntp__service_name }}"
+    enabled: true
+    state: started
+  register: ntp__service_started
+
+- name: Restart ntp service
+  systemd:
+    name: "{{ ntp__service_name }}"
+    state: restarted
+  register: ntp__service_restarted
+  when:
+    - not ntp__service_started.changed | default(false)
+    - not ntp__service_restarted.changed | default(false)
+...

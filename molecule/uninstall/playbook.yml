@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: dmitrii-ageev.ntp
+      ntp__state: absent

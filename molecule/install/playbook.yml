@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: dmitrii-ageev.ntp
+      ntp__servers:
+        - "3.centos.pool.ntp.org iburst"
+        - "4.centos.pool.ntp.org iburst"

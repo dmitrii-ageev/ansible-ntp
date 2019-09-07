@@ -1,0 +1,8 @@
+---
+- name: Create the system environment file
+  template:
+    src: etc/sysconfig/ntpd.j2
+    dest: "{{ ntp__sysconfig_file }}"
+    mode: "{{ ntp__file_mode }}"
+  notify: Start ntp service
+...

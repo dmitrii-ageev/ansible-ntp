@@ -1,0 +1,8 @@
+---
+- name: Disable service and stop it
+  systemd:
+    name: "{{ ntp__service_name }}"
+    enabled: false
+    state: stopped
+  failed_when: false
+...

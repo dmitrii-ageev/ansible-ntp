@@ -1,0 +1,32 @@
+---
+- block:
+    - name: Create a daemon group
+      group:
+        name: "{{ ntp__group }}"
+        system: true
+
+    - name: Create a daemon user
+      user:
+        name: "{{ ntp__user }}"
+        group: "{{ ntp__group }}"
+        system: true
+        createhome: false
+        comment: "{{ ntp__description }}"
+  when: ntp__user != "root"
+
+- name: Install required packages
+  yum:
+    name: "{{ ntp__packages }}"
+    state: present
+    update_cache: true
+  notify: Start ntp service
+
+- name: Create an application folder set
+  file:
+    path: "{{ ntp__directories }}"
+    state: directory
+    owner: "{{ ntp__user }}"
+    group: "{{ ntp__group }}"
+    mode: "{{ ntp__dir_mode }}"
+  notify: Restart ntp service
+...

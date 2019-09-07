@@ -1,0 +1,103 @@
+#
+# {{ ansible_managed | default('This file is managed by Ansible.') }}
+#
+# /etc/ntp.conf, configuration for ntpd.
+#
+# For more information about this file, see the man pages
+# # ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).
+#
+#
+
+driftfile {{ ntp__drift_file }}
+
+statsdir {{ ntp__stats_dir }}
+{% if ntp__statistics %}
+# Enable this if you want statistics to be logged.
+statistics {{ ntp__statistics }}
+
+{%   if ntp__file_gen %}
+{%     for filegen in ntp__file_gen %}
+filegen {{ filegen }}
+{%     endfor %}
+{%   endif -%}
+{% endif -%}
+
+# Specify one or more NTP servers.
+
+# You can use servers from the NTP Pool Project. Approved by Ubuntu Technical Board
+# on 2011-02-08 (LP: #104525). See http://www.pool.ntp.org/join.html for
+# more information.
+{% for server in ntp__servers %}
+server {{ server }}
+{% endfor -%}
+
+# Use Ubuntu's ntp server as a fallback.
+pool ntp.ubuntu.com
+
+# Protect NTP server against use in amplification attacks
+disable monitor
+
+{% if ntp__restrict %}
+# Access control configuration; see /usr/share/doc/ntp-doc/html/accopt.html for
+# details.  The web page <http://support.ntp.org/bin/view/Support/AccessRestrictions>
+# might also be helpful.
+#
+# Note that "restrict" applies to both servers and clients, so a configuration
+# that might be intended to block requests from certain clients could also end
+# up blocking replies from your own upstream servers.
+
+# Clients from this (example!) subnet have unlimited access, but only if
+# cryptographically authenticated.
+#restrict 192.168.123.0 mask 255.255.255.0 notrust
+
+# By default, exchange time with everybody, but don't allow configuration.
+{%   for restrict in ntp__restrict %}
+restrict {{ restrict }}
+{%   endfor -%}
+{% endif %}
+
+{# Crypto/Keys section #}
+{% if ntp__crypto %}crypto{% endif -%}
+{% if ntp__keys %}
+keys {{ ntp__keys }}
+{% endif -%}
+{% if ntp__trusted_key %}
+trustedkey {{ ntp__trusted_key }}
+{% endif -%}
+{% if ntp__request_key %}
+requestkey {{ ntp__request_key }}
+{% endif -%}
+{% if ntp__control_key %}
+controlkey {{ ntp__control_key }}
+{% endif -%}
+
+{# This feature is currently unsupported. #}
+# If you want to provide time to your local subnet, change the next line.
+# (Again, the address is an example only.)
+#broadcast 192.168.123.255
+
+{% if not ntp__auth %}
+disable auth
+{% endif -%}
+{% if ntp__multicast_client %}
+multicastclient {{ ntp__multicast_address }}
+{% endif -%}
+{% if ntp__broadcast_client %}
+# If you want to listen to time broadcasts on your local subnet, de-comment the
+# next lines.  Please do this only if you trust everybody on the network!
+broadcastclient
+{% endif %}
+
+#Changes recquired to use pps synchonisation as explained in documentation:
+#http://www.ntp.org/ntpfaq/NTP-s-config-adv.htm#AEN3918
+
+#server 127.127.8.1 mode 135 prefer    # Meinberg GPS167 with PPS
+#fudge 127.127.8.1 time1 0.0042        # relative to PPS for my hardware
+
+#server 127.127.22.1                   # ATOM(PPS)
+#fudge 127.127.22.1 flag3 1            # enable PPS API
+
+{# Include file at the bottom of the configuration file #}
+{% if ntp__include_file %}
+includefile {{ ntp__include_file }}
+{% endif %}
