@@ -4,7 +4,7 @@ services: docker
 
 env:
   global:
-    - ROLE_NAME: logrotate
+    - ROLE_NAME: ntp
   matrix:
     - MOLECULE_DISTRO: centos/systemd
 
