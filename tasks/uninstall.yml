@@ -1,11 +1,12 @@
 ---
 - name: Remove service directories
   file:
-    path: "{{ ntp__directories }}"
+    path: "{{ item }}"
     state: absent
+  loop: "{{ ntp__directories }}"
 
 - name: Uninstall service packages
-  package:
+  yum:
     name: "{{ ntp__packages }}"
     state: absent
 ...

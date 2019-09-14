@@ -30,6 +30,9 @@ def test_package(host):
     logrotate_configuration = host.file('/etc/logrotate.d/%s' % package_name)
     assert not logrotate_configuration.exists, 'The logrotate configuration file should be removed.'
 
+    # Check ntpstats directory
+    assert not host.file('/var/lib/ntpstats').exists, 'The ntpstats directory should be removed.'
+
 
 def test_configuration(host):
     # A configuration file must be removed

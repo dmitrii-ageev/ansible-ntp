@@ -30,6 +30,9 @@ def test_package(host):
     logrotate_configuration = host.file('/etc/logrotate.d/%s' % package_name)
     assert logrotate_configuration.exists, 'The logrotate configuration file should exists.'
 
+    # Check ntpstats directory
+    assert host.file('/var/lib/ntpstats').exists, 'The ntpstats directory should exists.'
+
 
 def test_configuration(host):
     # Configuration file must be in place

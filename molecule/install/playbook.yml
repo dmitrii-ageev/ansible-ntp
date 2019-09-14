@@ -6,3 +6,4 @@
       ntp__servers:
         - "3.centos.pool.ntp.org iburst"
         - "4.centos.pool.ntp.org iburst"
+      ntp__stats_dir: /var/lib/ntpstats
