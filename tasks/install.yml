@@ -21,12 +21,13 @@
     update_cache: true
   notify: Start ntp service
 
-- name: Create an application folder set
+- name: Create service directories
   file:
-    path: "{{ ntp__directories }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ ntp__user }}"
     group: "{{ ntp__group }}"
     mode: "{{ ntp__dir_mode }}"
+  loop: "{{ ntp__directories }}"
   notify: Restart ntp service
 ...
