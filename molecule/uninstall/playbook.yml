@@ -3,4 +3,5 @@
   hosts: all
   roles:
     - role: dmitrii-ageev.ntp
+      ntp__stats_dir: /var/lib/ntpstats
       ntp__state: absent
