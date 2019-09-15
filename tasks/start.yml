@@ -1,0 +1,9 @@
+---
+- name: Start the service and enable it
+  systemd:
+    name: "{{ ntp__service_name }}"
+    enabled: true
+    state: started
+    daemon_reload: "{{ ntp__system_configuration.changed | default(false) }}"
+  register: ntp__service_started
+...

@@ -23,6 +23,7 @@ def test_package(host):
     # Check if a system configuration file exists
     system_configuration = host.file('/etc/sysconfig/%s' % service_name)
     assert system_configuration.exists, 'The system configuration file should exists.'
+    assert system_configuration.contains('-I 127.0.0.1'), 'The system configuration file is incorrect.'
 
     # Logrotate package should be installed
     assert host.package('logrotate').is_installed, 'The logrotate package should be installed.'
