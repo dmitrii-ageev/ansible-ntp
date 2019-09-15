@@ -3,18 +3,4 @@
   file:
     path: "{{ ntp__conf_file }}"
     state: absent
-
-- block:
-    - name: Delete the daemon user
-      user:
-        name: "{{ ntp__user }}"
-        state: absent
-        remove: true
-
-    - name: Delete the daemon group
-      group:
-        name: "{{ ntp__group }}"
-        state: absent
-
-  when: ntp__user != "root"
 ...

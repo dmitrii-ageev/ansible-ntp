@@ -1,16 +1,15 @@
 ---
-- name: Start ntp service
+- name: Systemd daemon reload
   systemd:
     name: "{{ ntp__service_name }}"
-    enabled: true
-    state: started
-  register: ntp__service_started
+    daemon_reload: true
+  when:
+    - not ntp__service_started.changed | default(false)
 
 - name: Restart ntp service
   systemd:
     name: "{{ ntp__service_name }}"
     state: restarted
-    daemon_reload: true
   register: ntp__service_restarted
   when:
     - not ntp__service_started.changed | default(false)

@@ -1,5 +1,5 @@
 ---
-- name: Disable service and stop it
+- name: Disable the service and stop it
   systemd:
     name: "{{ ntp__service_name }}"
     enabled: false
