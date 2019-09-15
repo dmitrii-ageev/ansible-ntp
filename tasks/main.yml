@@ -4,7 +4,7 @@
 - block:
     - include_tasks: install.yml
     - include_tasks: configuration.yml
-    - include_tasks: run.yml
+    - include_tasks: start.yml
   when: ntp__state == "present"
 
 - block:
