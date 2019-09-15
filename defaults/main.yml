@@ -46,7 +46,7 @@ ntp__pid_file:                "{{ ntp__run_dir }}/{{ ntp__service_name }}.pid"
 ntp__log_file:                "{{ ntp__log_dir }}/{{ ntp__service_name }}.log"
 ntp__drift_file:              "{{ ntp__drift_dir }}/{{ ntp__service_name }}.drift"
 
-# Required packages
+# Service packages
 ntp__packages:
   - "{{ ntp__service }}"
 
