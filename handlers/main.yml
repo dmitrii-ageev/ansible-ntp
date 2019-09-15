@@ -10,6 +10,7 @@
   systemd:
     name: "{{ ntp__service_name }}"
     state: restarted
+    daemon_reload: true
   register: ntp__service_restarted
   when:
     - not ntp__service_started.changed | default(false)
