@@ -3,5 +3,6 @@
   hosts: all
   roles:
     - role: dmitrii-ageev.ntp
-      ntp__stats_dir: /var/lib/ntpstats
       ntp__state: absent
+      ntp__stats_dir: /var/lib/ntpstats
+      ntp__service_options: "-I 127.0.0.1 -g -u {{ ntp__user }}:{{ ntp__group }} -p {{ ntp__pid_file }}"
